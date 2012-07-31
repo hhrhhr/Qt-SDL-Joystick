@@ -11,8 +11,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        widget.cpp \
+    sdljoystick.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    sdljoystick.h
 
 FORMS    += widget.ui
+
+LIBS += -lSDL
+
