@@ -4,55 +4,29 @@
 #include <QObject>
 #include <QTimer>
 #include <QList>
-#include <QMap>
-#include <QStringList>
-#include <SDL/SDL.h>
+#include <QListIterator>
+#include "joystick.h"
 
-class SDLJoystick
-{
-    int m_index;
-    SDL_Joystick *m_joy;
-    QMap<quint8, Sint16> m_axes;
-    QMap<quint8, Uint8> m_buttons;
-    QMap<quint8, Uint8> m_hats;
-
-    void reset();
-    void scan(int index);
-    void close();
-
-public:
-    QString name;
-    int numAxes;
-    int numButtons;
-    int numHats;
-
-    SDLJoystick(int index = 0);
-    ~SDLJoystick();
-    void processEvent();
-};
-
-class Joysticks : public QObject
+class SDLJoystick : public QObject
 {
     Q_OBJECT
 
     QTimer joystickTimer;
 
 public:
-    QList<SDLJoystick *> idx;
-    int numJoysticks;
+    QList<Joystick *> joys;
 
-    explicit Joysticks(QObject *parent = 0);
-    ~Joysticks();
-    void scanJoysticks();
-    void startUpdate(int eventTimeout = 500);
-    void stopUpdate();
+    explicit SDLJoystick(QObject *parent = 0);
+    ~SDLJoystick();
 
 signals:
-    void numJoysticksChanged(int num);
+    void joysChanged(QListIterator<Joystick *> i);
 
 public slots:
-    void processEvent();
+    void onScan();
+    void onStart(int eventTimeout = 500);
+    void onStop();
+    void onProcessEvent();
 };
-
 
 #endif // SDLJOYSTICK_H

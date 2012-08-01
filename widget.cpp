@@ -1,5 +1,3 @@
-#include <QDebug>
-
 #include "widget.h"
 #include "ui_widget.h"
 
@@ -9,30 +7,52 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    joys = new Joysticks();
-    on_btRescan_clicked();
+//    on_btRescan_clicked();
 }
 
 Widget::~Widget()
 {
-    delete joys;
     delete ui;
 }
 
 /* private slots */
 
+void Widget::on_btReset_clicked()
+{
+    ui->spTimeout->setValue(500);
+    ui->spNumChannels->setValue(8);
+}
+
 void Widget::on_btRescan_clicked()
 {
-    on_btStop_clicked();
-    joys->scanJoysticks();
+    ui->listJoys->clear();
+    emit scan();
 }
 
 void Widget::on_btStart_clicked()
 {
-    joys->startUpdate(ui->spTimeout->value());
+    emit start(ui->spTimeout->value());
 }
 
 void Widget::on_btStop_clicked()
 {
-    joys->stopUpdate();
+    emit stop();
+}
+
+/* public slots */
+
+void Widget::onJoysChanged(QListIterator<Joystick *> i)
+{
+    QString txt;
+    Joystick *j;
+    while (i.hasNext()) {
+        j = i.next();
+        txt = QString("#%1 \"%2\" axes: %3, buttons: %4, hats: %5")
+                .arg(j->index)
+                .arg(j->name)
+                .arg(j->numAxes)
+                .arg(j->numButtons)
+                .arg(j->numHats);
+        ui->listJoys->addItem(txt);
+    }
 }

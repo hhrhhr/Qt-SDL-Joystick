@@ -1,106 +1,26 @@
 #include "sdljoystick.h"
 #include <QDebug>
 
-SDLJoystick::SDLJoystick(int index)
+SDLJoystick::SDLJoystick(QObject *parent)
+    : QObject(parent)
 {
     qDebug() << this << "SDLJoystick";
-    reset();
-    scan(index);
-//    close();
+    connect(&joystickTimer, SIGNAL(timeout()), this, SLOT(onProcessEvent()));
 }
 
 SDLJoystick::~SDLJoystick()
 {
     qDebug() << this << "~SDLJoystick";
-    close();
-}
-
-void SDLJoystick::reset()
-{
-    m_joy = NULL;
-    name = "";
-    numAxes = 0;
-    numButtons = 0;
-    numHats = 0;
-    m_axes.clear();
-    m_buttons.clear();
-    m_hats.clear();
-}
-
-void SDLJoystick::scan(int index)
-{
-    m_index = index;
-    name = SDL_JoystickName(index);
-
-    m_joy = SDL_JoystickOpen(index);
-    if (!m_joy) {
-        qCritical() << "SDL_JoystickOpen is fail, index:" << index;
-        return;
-    }
-
-    quint8 i;
-    numAxes = SDL_JoystickNumAxes(m_joy);
-    for (i = 0; i < numAxes; ++i)
-        m_axes[i] = 0;
-
-    numButtons = SDL_JoystickNumButtons(m_joy);
-    for (i = 0; i < numButtons; ++i)
-        m_buttons[i] = 0;
-
-    numHats = SDL_JoystickNumHats(m_joy);
-    for (i = 0; i < numHats; ++i)
-        m_hats[i] = 0;
-
-    qDebug("idx: %d, name: %s (axes: %d, buttons: %d, hats: %d)",
-           m_index, name.toAscii().data(), numAxes, numButtons, numHats);
-
-}
-
-void SDLJoystick::close()
-{
-    if (m_joy) SDL_JoystickClose(m_joy);
-}
-
-void SDLJoystick::processEvent()
-{
-    qDebug() << m_index;
-    int i;
-
-    for (i = 0; i < numAxes; ++i) {
-        m_axes[i] = SDL_JoystickGetAxis(m_joy, i);
-    }
-
-    for (i = 0; i < numButtons; ++i) {
-        m_buttons[i] = SDL_JoystickGetButton(m_joy, i);
-    }
-
-    for (i = 0; i < numHats; ++i) {
-        m_hats[i] = SDL_JoystickGetAxis(m_joy, i);
-    }
-}
-
-/* ************************************************************** */
-
-Joysticks::Joysticks(QObject *parent) :
-    QObject(parent)
-{
-    qDebug() << this << "Joysticks";
-    connect(&joystickTimer, SIGNAL(timeout()), this, SLOT(processEvent()));
-}
-
-Joysticks::~Joysticks()
-{
-    qDebug() << this << "~Joysticks";
     if (SDL_WasInit(SDL_INIT_JOYSTICK) != 0)
         SDL_Quit();
 }
 
-void Joysticks::scanJoysticks()
-{
-    for (int i = 0; i < numJoysticks; ++i)
-        delete idx.at(i);
+/* public slots */
 
-    idx.clear();
+void SDLJoystick::onScan()
+{
+    qDeleteAll(joys.begin(), joys.end());
+    joys.clear();
 
     if (SDL_WasInit(SDL_INIT_JOYSTICK) != 0)
         SDL_Quit();
@@ -110,27 +30,78 @@ void Joysticks::scanJoysticks()
         return;
     }
 
-    numJoysticks = SDL_NumJoysticks();
-    for (int i = 0; i < numJoysticks; ++i)
-        idx.append(new SDLJoystick(i));
+    int num = SDL_NumJoysticks();
+    Joystick *j;
+    for (int i = 0; i < num; ++i) {
+        j = new Joystick();
+
+        j->index = i;
+
+        j->name = SDL_JoystickName(i);
+
+        j->joy = SDL_JoystickOpen(i);
+        if (!j->joy) {
+            qCritical() << "SDL_JoystickOpen is fail, index:" << i;
+            return;
+        }
+
+        quint8 k;
+
+        j->numAxes = SDL_JoystickNumAxes(j->joy);
+        for (k = 0; k < j->numAxes; ++k)
+            j->axes[k] = 0;
+
+        j->numButtons = SDL_JoystickNumButtons(j->joy);
+        for (k = 0; k < j->numButtons; ++k)
+            j->buttons[k] = 0;
+
+        j->numHats = SDL_JoystickNumHats(j->joy);
+        for (k = 0; k < j->numHats; ++k)
+            j->hats[k] = 0;
+
+        joys.append(j);
+
+        qDebug("idx: %d, name: %s (axes: %d, buttons: %d, hats: %d)",
+               j->index,
+               j->name.toAscii().data(),
+               j->numAxes,
+               j->numButtons,
+               j->numHats);
+    }
+
+    QListIterator<Joystick *> i(joys);
+    emit joysChanged(i);
 }
 
-void Joysticks::startUpdate(int eventTimeout)
+void SDLJoystick::onStart(int eventTimeout)
 {
     joystickTimer.start(eventTimeout);
 }
 
-void Joysticks::stopUpdate()
+void SDLJoystick::onStop()
 {
     joystickTimer.stop();
 }
 
-/* public slots */
-
-void Joysticks::processEvent()
+void SDLJoystick::onProcessEvent()
 {
     SDL_JoystickUpdate();
 
-    for (int i = 0; i < numJoysticks; ++i)
-        idx.at(i)->processEvent();
+    Joystick *joy;
+
+    for (int j = 0; j < joys.size(); ++j) {
+        qDebug() << j;
+
+        int i;
+        joy = joys.at(j);
+
+        for (i = 0; i < joy->numAxes; ++i)
+            joy->axes[i] = SDL_JoystickGetAxis(joy->joy, i);
+
+        for (i = 0; i < joy->numButtons; ++i)
+            joy->buttons[i] = SDL_JoystickGetButton(joy->joy, i);
+
+        for (i = 0; i < joy->numHats; ++i)
+            joy->hats[i] = SDL_JoystickGetAxis(joy->joy, i);
+    }
 }

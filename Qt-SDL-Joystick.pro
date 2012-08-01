@@ -12,10 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         widget.cpp \
-    sdljoystick.cpp
+    sdljoystick.cpp \
+    joystick.cpp
 
 HEADERS  += widget.h \
-    sdljoystick.h
+    sdljoystick.h \
+    joystick.h
 
 FORMS    += widget.ui
 
