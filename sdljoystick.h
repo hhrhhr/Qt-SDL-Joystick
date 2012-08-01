@@ -8,10 +8,8 @@
 #include <QStringList>
 #include <SDL/SDL.h>
 
-class SDLJoystick : public QObject
+class SDLJoystick
 {
-    Q_OBJECT
-
     int m_index;
     SDL_Joystick *m_joy;
     QMap<quint8, Sint16> m_axes;
@@ -19,6 +17,8 @@ class SDLJoystick : public QObject
     QMap<quint8, Uint8> m_hats;
 
     void reset();
+    void scan(int index);
+    void close();
 
 public:
     QString name;
@@ -26,24 +26,32 @@ public:
     int numButtons;
     int numHats;
 
-    explicit SDLJoystick(int index = 0, QObject *parent = 0);
+    SDLJoystick(int index = 0);
     ~SDLJoystick();
-
-signals:
-
-public slots:
     void processEvent();
 };
 
-class Joysticks
+class Joysticks : public QObject
 {
+    Q_OBJECT
+
+    QTimer joystickTimer;
 
 public:
     QList<SDLJoystick *> idx;
     int numJoysticks;
 
-    Joysticks();
+    explicit Joysticks(QObject *parent = 0);
     ~Joysticks();
+    void scanJoysticks();
+    void startUpdate(int eventTimeout = 500);
+    void stopUpdate();
+
+signals:
+    void numJoysticksChanged(int num);
+
+public slots:
+    void processEvent();
 };
 
 
