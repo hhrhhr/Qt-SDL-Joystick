@@ -208,13 +208,43 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="channelsLayout">
+    <layout class="QHBoxLayout" name="channelsLayout" stretch="1,1">
      <item>
       <widget class="QGroupBox" name="inputBox">
        <property name="title">
         <string>Input</string>
        </property>
        <layout class="QVBoxLayout" name="inputLayout">
+        <item>
+         <layout class="QHBoxLayout" name="buttonsLayout">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hatsLayout">
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">

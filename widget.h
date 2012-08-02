@@ -2,9 +2,11 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QCheckBox>
 #include <QTime>
 #include "joystick.h"
 #include "channel.h"
+#include "hat.h"
 
 namespace Ui {
 class Widget;
@@ -22,6 +24,8 @@ class Widget : public QWidget
 
     QList<Channel *> channelsIn;
     QList<Channel *> channelsOut;
+    QList<QCheckBox *> buttons;
+    QList<Hat *> hats;
 
 public:
     explicit Widget(QWidget *parent = 0);

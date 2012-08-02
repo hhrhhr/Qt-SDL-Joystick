@@ -46,6 +46,10 @@ void Widget::on_btRescan_clicked()
     channelsIn.clear();
     qDeleteAll(channelsOut);
     channelsOut.clear();
+    qDeleteAll(buttons);
+    buttons.clear();
+    qDeleteAll(hats);
+    hats.clear();
 
     ui->listJoys->clear();
 
@@ -89,10 +93,14 @@ void Widget::onJoysChanged(int count, QListIterator<Joystick *> i)
 {
     if (count) {
         Channel *ch;
-
+        QCheckBox *btn;
+        Hat *hat;
         Joystick *j;
         int chId = 0;
+        int btId = 0;
+        int hatId = 0;
         QString txt;
+
         while (i.hasNext()) {
             j = i.next();
 
@@ -109,6 +117,22 @@ void Widget::onJoysChanged(int count, QListIterator<Joystick *> i)
                 channelsIn.append(ch);
                 ui->inputLayout->insertWidget(chId, ch);
                 chId++;
+            }
+
+            for (int bt = 0; bt < j->numButtons; ++bt) {
+                btn = new QCheckBox();
+                btn->setToolTip(QString("button %1 (#%2/%3)").arg(btId).arg(j->index).arg(bt));
+                btn->setEnabled(false);
+                buttons.append(btn);
+                ui->buttonsLayout->addWidget(btn);
+                btId++;
+            }
+
+            for (int ht = 0; ht < j->numHats; ++ht) {
+                hat = new Hat();
+                hats.append(hat);
+                ui->hatsLayout->insertWidget(ht, hat);
+                hatId++;
             }
         }
 
@@ -148,6 +172,8 @@ void Widget::onDataChanged(int count, QListIterator<Joystick *> i)
 
     Joystick *j;
     int chId = 0;
+    int btId = 0;
+    int hatId = 0;
 
     while (i.hasNext()) {
         j = i.next();
@@ -155,6 +181,16 @@ void Widget::onDataChanged(int count, QListIterator<Joystick *> i)
         for (int axis = 0; axis < j->numAxes; ++axis) {
             channelsIn.at(chId)->setVal(j->axes.value(axis));
             chId++;
+        }
+
+        for (int bt = 0; bt < j->numButtons; ++bt) {
+            buttons.at(btId)->setChecked(j->buttons.value(bt));
+            btId++;
+        }
+
+        for (int ht = 0; ht < j->numHats; ++ht) {
+            hats.at(hatId)->setHat(j->hats.value(ht));
+            hatId++;
         }
     }
 

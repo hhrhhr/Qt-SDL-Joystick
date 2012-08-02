@@ -106,7 +106,7 @@ void SDLJoystick::onProcessEvent()
             joy->buttons[i] = SDL_JoystickGetButton(joy->joy, i);
 
         for (i = 0; i < joy->numHats; ++i)
-            joy->hats[i] = SDL_JoystickGetAxis(joy->joy, i);
+            joy->hats[i] = SDL_JoystickGetHat(joy->joy, i);
     }
 
     QListIterator<Joystick *> i(joys);

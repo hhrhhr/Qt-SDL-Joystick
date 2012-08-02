@@ -14,15 +14,18 @@ SOURCES += main.cpp\
         widget.cpp \
     sdljoystick.cpp \
     joystick.cpp \
-    channel.cpp
+    channel.cpp \
+    hat.cpp
 
 HEADERS  += widget.h \
     sdljoystick.h \
     joystick.h \
-    channel.h
+    channel.h \
+    hat.h
 
 FORMS    += widget.ui \
-    channel.ui
+    channel.ui \
+    hat.ui
 
 LIBS += -lSDL
 
