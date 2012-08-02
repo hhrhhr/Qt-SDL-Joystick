@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>400</height>
+    <width>640</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,245 +15,269 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>settings</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>update rate:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spTimeout">
-        <property name="minimum">
-         <number>20</number>
-        </property>
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="value">
-         <number>500</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>output channels:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spNumChannels">
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>32</number>
-        </property>
-        <property name="value">
-         <number>8</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btReset">
-        <property name="text">
-         <string>Reset</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QGroupBox" name="buttonBox">
+       <property name="title">
+        <string>controls</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="btStart">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Start update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btStop">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Stop update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btRescan">
+          <property name="text">
+           <string>Rescan</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="settingsBox">
+       <property name="title">
+        <string>settings</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>joys refresh:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spTimeout">
+          <property name="suffix">
+           <string>ms</string>
+          </property>
+          <property name="minimum">
+           <number>10</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>gui refresh:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spGuiTimeout">
+          <property name="suffix">
+           <string>ms</string>
+          </property>
+          <property name="minimum">
+           <number>20</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="value">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>output channels:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spNumChannels">
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::UpDownArrows</enum>
+          </property>
+          <property name="minimum">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <number>32</number>
+          </property>
+          <property name="value">
+           <number>8</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="btReset">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="btApply">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="pushButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Save</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>output resolution:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="spinBox">
+          <property name="minimum">
+           <number>128</number>
+          </property>
+          <property name="maximum">
+           <number>4096</number>
+          </property>
+          <property name="singleStep">
+           <number>128</number>
+          </property>
+          <property name="value">
+           <number>1024</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="buttonBox">
-     <property name="title">
-      <string>controls</string>
-     </property>
-     <layout class="QHBoxLayout" name="buttonLayout">
-      <item>
-       <widget class="QPushButton" name="btRescan">
-        <property name="text">
-         <string>Rescan</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btStart">
-        <property name="text">
-         <string>Start update</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btStop">
-        <property name="text">
-         <string>Stop update</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    <layout class="QHBoxLayout" name="channelsLayout">
+     <item>
+      <widget class="QGroupBox" name="inputBox">
+       <property name="title">
+        <string>Input</string>
+       </property>
+       <layout class="QVBoxLayout" name="inputLayout">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="outputBox">
+       <property name="title">
+        <string>Output</string>
+       </property>
+       <layout class="QVBoxLayout" name="outputLayout">
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QListWidget" name="listJoys">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>50</height>
-      </size>
-     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="joysLayout">
-     <item>
-      <widget class="QTableWidget" name="tableWidget">
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
-       </property>
-       <property name="showDropIndicator" stdset="0">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropOverwriteMode">
-        <bool>false</bool>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="showGrid">
-        <bool>true</bool>
-       </property>
-       <property name="gridStyle">
-        <enum>Qt::DotLine</enum>
-       </property>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>40</number>
-       </attribute>
-       <attribute name="horizontalHeaderMinimumSectionSize">
-        <number>20</number>
-       </attribute>
-       <attribute name="verticalHeaderDefaultSectionSize">
-        <number>20</number>
-       </attribute>
-       <attribute name="verticalHeaderMinimumSectionSize">
-        <number>15</number>
-       </attribute>
-       <row>
-        <property name="text">
-         <string>#1, 1</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#1, 2</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#1, 3</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#1, 4</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 1</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 2</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 3</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 4</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 5</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>#2, 7</string>
-        </property>
-       </row>
-       <column>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>3</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>4</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>5</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>6</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>8</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>btStart</tabstop>
+  <tabstop>btStop</tabstop>
+  <tabstop>btRescan</tabstop>
+  <tabstop>spTimeout</tabstop>
+  <tabstop>spGuiTimeout</tabstop>
+  <tabstop>spNumChannels</tabstop>
+  <tabstop>spinBox</tabstop>
+  <tabstop>btReset</tabstop>
+  <tabstop>btApply</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>listJoys</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

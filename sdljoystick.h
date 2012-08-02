@@ -20,11 +20,12 @@ public:
     ~SDLJoystick();
 
 signals:
-    void joysChanged(QListIterator<Joystick *> i);
+    void joysChanged(int count, QListIterator<Joystick *> i);
+    void dataChanged(int count, QListIterator<Joystick *> i);
 
 public slots:
     void onScan();
-    void onStart(int eventTimeout = 500);
+    void onStart(int eventTimeout = 20);
     void onStop();
     void onProcessEvent();
 };

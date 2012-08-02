@@ -18,8 +18,10 @@ int main(int argc, char *argv[])
     QObject::connect(&w, SIGNAL(stop()),
                      js, SLOT(onStop()));
 
-    QObject::connect(js, SIGNAL(joysChanged(QListIterator<Joystick*>)),
-                     &w, SLOT(onJoysChanged(QListIterator<Joystick*>)));
+    QObject::connect(js, SIGNAL(joysChanged(int,QListIterator<Joystick*>)),
+                     &w, SLOT(onJoysChanged(int,QListIterator<Joystick*>)));
+    QObject::connect(js, SIGNAL(dataChanged(int,QListIterator<Joystick*>)),
+                     &w, SLOT(onDataChanged(int,QListIterator<Joystick*>)));
 
     w.show();
     js->onScan();

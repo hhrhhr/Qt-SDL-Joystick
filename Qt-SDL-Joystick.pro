@@ -13,13 +13,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         widget.cpp \
     sdljoystick.cpp \
-    joystick.cpp
+    joystick.cpp \
+    channel.cpp
 
 HEADERS  += widget.h \
     sdljoystick.h \
-    joystick.h
+    joystick.h \
+    channel.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    channel.ui
 
 LIBS += -lSDL
 
